@@ -53,9 +53,10 @@ public class ResultGGSIPU {
 										System.out.println("-----------------end here ");
 								}catch(Exception ex){
 									ex.printStackTrace();
+								}finally {
+									System.out.println("Deleting "+file.toString());
+									file.delete();
 								}
-							    System.out.println("Deleting "+file.toString());
-							    file.delete();
 							}
 						}
 					}
@@ -87,51 +88,7 @@ public class ResultGGSIPU {
 		
 	}
 	*/
-	
-	private static String hashIt(String password) throws NoSuchAlgorithmException{
-		
-		password = "cannot forget"+password;
-		
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
- 
-        byte byteData[] = md.digest();
- 
-        //convert the byte to hex format method 1
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) {
-         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
- 
-        return sb.toString();
-	} 
-	
-	private static boolean shouldIRun(){
-		boolean allOK = false;
-		try{
-			int rand = (int) (Math.random()*1000);
-			URL url = new URL("http://akshit.xyz/notdelete/working/authentication/this.php?value="+rand);
-			URLConnection con = url.openConnection();
-			InputStream in = con.getInputStream();
-			String encoding = con.getContentEncoding();
-			encoding = encoding == null ? "UTF-8" : encoding;
-			String body = IOUtils.toString(in, encoding);
-			if(body.contains(hashIt(rand+""))){
-				allOK = true;
-			}
-		}catch(Exception ex){
-			System.out.println("This shouldn't have happened");
-		}
-		
-		return allOK;
-	}
-	
 	public static void main(String [] args){
-		
-		if(!shouldIRun()){
-			System.err.println("Error in authentication ");
-			System.exit(1);
-		}
 		
 		boolean multiThreaded = false;
 
